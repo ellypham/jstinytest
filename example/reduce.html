@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+
+    const numbers = [1, 2, 3, 4];
+
+    // 0 + 1 = 1
+    // 1 + 2 = 3
+    // 3 + 3 = 6
+    // 6 + 4 = 10
+
+    let sumSoFar = 0
+
+    // sumSoFar = sumSoFar + 1 // 0 + 1 = 1
+    // sumSoFar = sumSoFar + 2 // 1 + 2 = 3
+    // sumSoFar = sumSoFar + 3 // 3 + 3 = 6
+    // sumSoFar = sumSoFar + 4  // 6 + 4 = 10
+
+    // sumSoFar = sumSoFar + numbers[0] // 0 + 1 = 1
+    // sumSoFar = sumSoFar + numbers[1] // 1 + 2 = 3
+    // sumSoFar = sumSoFar + numbers[2] // 3 + 3 = 6
+    // sumSoFar = sumSoFar + numbers[3]  // 6 + 4 = 10
+
+    function addSum(sumSoFar, nextNumber) {
+      return sumSoFar + nextNumber;
+    }
+
+    // sumSoFar = addSum(sumSoFar, numbers[0]);
+    // sumSoFar = addSum(sumSoFar, numbers[1]);
+    // sumSoFar = addSum(sumSoFar, numbers[2]);
+    // sumSoFar = addSum(sumSoFar, numbers[3]);
+
+    // for(i = 0; i < numbers.length; i++) {
+    //   sumSoFar = addSum(sumSoFar, numbers[i]);
+    // }
+
+    function reduce(array, callback, startingValue) {
+      let resultSoFar = startingValue;
+      for(i = 0; i < array.length; i++) {
+      resultSoFar = addSum(resultSoFar, array[i]);
+      }
+      return resultSoFar;
+    }
+
+    console.log(reduce(numbers, addSum, 0));
+
+    console.log(reduce(['e','l','l','y'], function(resultSoFar, nextValue) {
+      return resultSoFar + nextValue;
+    }, ''))
+
+  </script>
+</body>
+</html>
