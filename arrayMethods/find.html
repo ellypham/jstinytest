@@ -1,0 +1,131 @@
+<script src="../simpletest.js"></script>
+<script>
+
+/*
+PROTOTYPE IMPLEMENTATION
+const numbers = [1, 2];
+
+function greaterThanTwo(number) {
+  if(number > 2) {
+    return number
+  } else {
+    return false;
+  }
+}
+
+function find(array, callback, thisArg) {
+  for(i = 0; i < array.length; i++) {
+    if(callback(array[i], i, array)) {
+      return array[i]
+    };
+  }
+  return undefined;
+}
+
+console.log(find(numbers, greaterThanTwo))
+
+
+The find() method returns the value of the first element in the provided array that satisfies the provided testing function.
+
+SYNTAX
+arr.find(array, callback(element[, index[, array]])[, thisArg])
+
+PARAMETERS
+callback
+this
+
+CALLBACK PARAMETERS
+element
+index
+array
+
+RETURN VALUE
+Returns a value of the first element in the array that satisfies the provided testing function.
+Otherwise, undefined is returned
+*/
+
+
+/*
+TESTS
+DONE: It should run the callback array.length times.
+It should not skip holes.
+It should accept an array as the first argument.
+It should accept a callback as the second argument.
+It should accept an optional this object.
+It should pass in the ith element as the first argument to the callback.
+It should pass in the ith position as the second argument to the callback.
+It should pass in the original array as the third argument to the callback.
+It should not mutate the original array.
+It should return the value of the first element in the array that satisfies the provided testing function.
+It should return undefined if no element in the array satisfies the provided testing function.
+It should not run the callback on any elements added to the array after the call to find begins.
+It should run the callback on existing, yet-unvisted element of the array if the array is changed by the callback function, where the value passed to the callback will be the value at the time 'find' visits the elements index.
+It should run the callback on deleted elements.
+*/
+
+function find(array, callback, optionalThisObject) {
+  let findCallback = callback;
+  // If configurableThisObject exists.
+  if (optionalThisObject) {
+    // Want to bind configurableThisObject to the callback function.
+    findCallback = callback.bind(optionalThisObject)
+  }
+
+  for(i = 0; i < array.length; i++) {
+    findCallback(array[i], i, array);
+  };
+}
+
+
+tests({
+  'It should run the callback array.length times': function() {
+    let numberOfTimesCallbackHasRun = 0;
+    find([1, 2, 3], function() {
+      numberOfTimesCallbackHasRun++;
+    });
+    eq(numberOfTimesCallbackHasRun, 3);
+  },
+
+  'It should should not skip holes when the callback is run': function() {
+    let numberOfTimesCallbackHasRun = 0;
+    const testArray = [,1,,2,3,4]
+    find(testArray, function(element) {
+      numberOfTimesCallbackHasRun++;
+      return element === 4;
+    });
+    eq(testArray.length, numberOfTimesCallbackHasRun);
+  },
+
+  'It should pass in the ith element as the first argument to the callback': function() {
+    find([1], function(element) {
+      eq(element, 1);
+    })
+  },
+
+  'It should pass in the ith position as the second argument to the callback.': function() {
+    find([1], function(element, index) {
+      eq(index, 0);
+    })
+  },
+
+  'It should pass in the original array as the third argument to the callback.': function() {
+    const testArray = [1, 2, 3]
+    find(testArray, function(element, index, originalArray) {
+      eq(originalArray, testArray);
+    })
+  },
+
+  'It should accept an optional this object': function() {
+   find([1], function() {
+      // Inside of here, this should be equal to the configurableThisObject.
+      // this.description should be equal to 'Configurable this object'
+      eq(this.description, 'I should be accessible inside of the callback');
+   }, {description: 'I should be accessible inside of the callback'});
+  }
+});
+
+
+
+
+
+</script>
