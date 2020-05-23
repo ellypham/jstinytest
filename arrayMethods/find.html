@@ -55,26 +55,26 @@ DONE: It should pass in the ith position as the second argument to the callback.
 DONE: It should pass in the original array as the third argument to the callback.
 DONE: It should return the value of the first element in the array that satisfies the provided testing function.
 DONE: It should return undefined if no element in the array satisfies the provided testing function.
+DONE: It should not mutate the array on which it is called.
 It should not run the callback on any elements added to the array after the call to find begins.
-It should run the callback on existing, yet-unvisted element of the array if the array is changed by the callback function, where the value passed to the callback will be the value at the time 'find' visits the elements index.
+DONE: It should run the callback on existing, yet-unvisted element of the array if the array is changed by the callback function, where the value passed to the callback will be the value at the time 'find' visits the elements index.
 It should run the callback on deleted elements.
 */
 
 function find(array, callback, optionalThisObject) {
   let findCallback = callback;
-  // If configurableThisObject exists.
+  const length = array.length
+
   if (optionalThisObject) {
-    // Want to bind configurableThisObject to the callback function.
     findCallback = callback.bind(optionalThisObject)
   }
 
-  for(i = 0; i < array.length; i++) {
+  for(i = 0; i < length; i++) {
     if(findCallback(array[i], i, array)) {
       return array[i];
     };
   }
 
-  return undefined;
 }
 
 
@@ -136,10 +136,47 @@ tests({
       return element > 3;
     });
     eq(findResult, undefined);
+  },
+
+  'It should not mutate the original array being called upon': function() {
+    const originalArray = [1, 2, 3];
+    find(originalArray, function(element, index, array) {
+      return element === 3;
+      eq(originalArray, array)
+    });
+  },
+
+  'It should not visit any elements added to the array after the call to find begins': function () {
+    const testArray = [1, 2, 3];
+    let numTimesCallbackRan = 0;
+    find(testArray, function() {
+      testArray.push(4);
+      numTimesCallbackRan++;
+    });
+    eq(numTimesCallbackRan, 3);
+    },
+
+  'It should run the callback on existing, yet-unvisted element of the array, the callback should visit the new value': function() {
+    const testArray = [1, 2, 3];
+    const result = find(testArray, function(element) {
+      testArray[2] = 4;
+      return element === 4;
+    });
+    eq(result, 4);
+  },
+
+  'It should run the callback on deleted elements.': function() {
+    const testArray = [1, 2, 3];
+    let numTimesCallbackRan = 0
+    find(testArray, function(element, index) {
+      if(index === 0) {
+        delete testArray[2];
+      }
+      numTimesCallbackRan++;
+    })
+    eq(numTimesCallbackRan, 3)
   }
 });
-
-
 
 
 
