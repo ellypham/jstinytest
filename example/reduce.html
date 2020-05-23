@@ -43,7 +43,7 @@
     function reduce(array, callback, startingValue) {
       let resultSoFar = startingValue;
       for(i = 0; i < array.length; i++) {
-      resultSoFar = addSum(resultSoFar, array[i]);
+      resultSoFar = callback(resultSoFar, array[i]);
       }
       return resultSoFar;
     }
