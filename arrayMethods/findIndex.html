@@ -1,0 +1,184 @@
+<script src="../simpletest.js"></script>
+<script>
+
+/*
+PROTOTYPE IMPLEMENTATION
+    const numbers = [5, 12, 8, 130, 44];
+
+    function isLargerNumber(element) {
+      return element > 13;
+    }
+
+    function findIndex(array, callback) {
+      for(i = 0; i < array.length; i++) {
+        if(callback(array[i], i, array)) {
+          return i;
+        }
+      }
+    }
+
+    console.log(findIndex(numbers, isLargerNumber));
+
+
+The findIndex() method returns the index of the first element in the array that satisfies the provided testing function.
+Otherwise, it returns -1, indicating that no element passed the test.
+
+SYNTAX
+arr.findIndex(array, callback(element[, index[, array]])[, thisArg])
+
+PARAMETERS
+callback
+this
+
+CALLBACK PARAMETERS
+element
+index
+array
+
+RETURN VALUE
+The index of the first element in the array that passes the test. Otherwise, -1.
+*/
+
+
+/*
+TESTS
+DONE: It should run the callback array.length times.
+DONE: It should not skip holes.
+DONE: It should accept an optional this object.
+DONE: It should pass in the ith element as the first argument to the callback.
+DONE: It should pass in the ith position as the second argument to the callback.
+DONE: It should pass in the original array as the third argument to the callback.
+DONE: It should return the index of the first element in the array that satisfies the provided testing function.
+DONE: It should return -1 if no element in the array satisfies the provided testing function.
+DONE: It should return -1 if the array length is 0.
+DONE: It should not run the callback on any elements added to the array after the call to find begins.
+DONE: It should run the callback on existing, yet-unvisted element of the array if the array is changed by the callback function, where the value passed to the callback will be the value at the time 'find' visits the elements index.
+It should run the callback on deleted elements.
+*/
+
+function findIndex(array, callback, optionalThisObject) {
+  let findIndexCallback = callback;
+  const length = array.length;
+
+  if (length === 0) {
+    return -1;
+  }
+
+  if (optionalThisObject) {
+    findIndexCallback = callback.bind(optionalThisObject);
+  }
+
+  for(i = 0; i < length; i++) {
+    if (findIndexCallback(array[i], i, array)) {
+      return i;
+    }
+  };
+
+  return -1;
+};
+
+tests({
+  'It should run the callback array.length times': function() {
+    let numberOfTimesCallbackHasRun = 0;
+    findIndex([1, 2, 3], function() {
+      numberOfTimesCallbackHasRun++;
+    });
+    eq(numberOfTimesCallbackHasRun, 3);
+  },
+
+  'It should should not skip holes when the callback is run': function() {
+    let numberOfTimesCallbackHasRun = 0;
+    const testArray = [,1,,2,3,4];
+    findIndex(testArray, function(element) {
+      numberOfTimesCallbackHasRun++;
+      return element === 4;
+    });
+    eq(testArray.length, numberOfTimesCallbackHasRun);
+  },
+
+  'It should pass in the ith element as the first argument to the callback': function() {
+    findIndex([1], function(element) {
+      eq(element, 1);
+    })
+  },
+
+  'It should pass in the ith position as the second argument to the callback.': function() {
+    findIndex([1], function(element, index) {
+      eq(index, 0);
+    })
+  },
+
+  'It should pass in the original array as the third argument to the callback.': function() {
+    const testArray = [1, 2, 3];
+    findIndex(testArray, function(element, index, originalArray) {
+      eq(originalArray, testArray);
+    })
+  },
+
+  'It should accept an optional this object': function() {
+    find([1], function() {
+        // Inside of here, this should be equal to the configurableThisObject.
+        // this.description should be equal to 'Configurable this object'
+        eq(this.description, 'I should be accessible inside of the callback');
+    }, {description: 'I should be accessible inside of the callback'});
+  },
+
+  'It should return the index of the first element in the array that satisfies the provided testing function.': function() {
+    const testArray = [1, 2, 3];
+    const findResult = findIndex(testArray, function(element, index) {
+      return element === 2;
+    });
+    eq(findResult, 1);
+  },
+
+  'It should return -1 if no element in the array satisfies the provided testing function.': function() {
+    const findResult = findIndex([1, 2, 3], function(element) {
+      return element > 3;
+    });
+    eq(findResult, -1);
+  },
+
+  'It should return -1 if the array length is 0.': function() {
+    const testArray = [];
+    findIndex(testArray, function() {
+      eq(testArray.length, 0);
+      eq(testArray, -1);
+    });
+  },
+
+  'It should not visit any elements added to the array after the call to find begins': function () {
+    const testArray = [1, 2, 3];
+    let numTimesCallbackRan = 0;
+    findIndex(testArray, function() {
+      testArray.push(4);
+      numTimesCallbackRan++;
+    });
+    eq(numTimesCallbackRan, 3);
+    },
+
+  'It should run the callback on existing, yet-unvisted element of the array, the callback should visit the new value': function() {
+    const testArray = [1, 2, 3];
+    const result = findIndex(testArray, function(element, index) {
+      testArray[2] = 4;
+      return element === 4;
+    });
+    eq(result, 2);
+  },
+
+  'It should run the callback on deleted elements.': function() {
+    const testArray = [1, 2, 3];
+    let numTimesCallbackRan = 0
+    findIndex(testArray, function(element, index) {
+      if(index === 0) {
+        delete testArray[2];
+      }
+      numTimesCallbackRan++;
+    })
+    eq(numTimesCallbackRan, 3)
+  }
+});
+
+
+
+</script>
+
