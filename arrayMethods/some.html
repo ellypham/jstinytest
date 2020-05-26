@@ -1,0 +1,208 @@
+<script src="../simpletest.js"></script>
+<script>
+
+/*
+PROTOTYPE IMPLEMENTATION
+  const numbers = [1, 2, 3, 4, 5];
+
+  function even(element) {
+    return element % 2 === 0;
+  }
+
+  function some(array, callback) {
+    for(i = 0; i < array.length; i++) {
+      if(callback(array[i], i, array )) {
+        return true;
+      } 
+    }
+
+    return false;
+  }
+
+  console.log(some(numbers, even));
+
+
+The some() method tests whether at least one element in the array passes the test implemented by the provided function. It returns a Boolean value.
+
+SYNTAX
+arr.some(array, callback(element[, index[, array]])[, thisArg])
+
+PARAMETERS
+callback
+this
+
+CALLBACK PARAMETERS
+element
+index
+array
+
+RETURN VALUE
+true if the callback function returns a truthy value for at least one element in the array. Otherwise, false.
+*/
+
+
+/*
+TESTS
+DONE: It should run the callback array.length times if the callback returns true.
+DONE: It should run callback function on each element in the array if each fails the testing function
+DONE: It should skip holes.
+DONE: It should accept an optional this object.
+DONE: It should pass in the ith element as the first argument to the callback.
+DONE: It should pass in the ith position as the second argument to the callback.
+DONE: It should pass in the original array as the third argument to the callback.
+DONE: It should not run the callback on any elements added to the array after the call to find begins.
+DONE: It should run the callback on existing, yet-unvisted element of the array, the callback should visit the new value
+DONE: It should not run the callback on deleted elements.
+DONE: It should not mutate the original array being called upon.
+DONE: It should return false on an empty array.
+DONE: It should return true if the callback function returns a truthy value for at least one element in the array.
+DONE: It should return false if the callback function returns a falsey value.
+*/
+
+function some(array, callback, optionalThisObject) {
+  let someCallback = callback;
+  const length = array.length;
+
+  if(optionalThisObject) {
+    someCallback = callback.bind(optionalThisObject);
+  }
+
+  for(i = 0; i < length; i++) {
+    if(i in array) {
+      if(someCallback(array[i], i, array)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+tests({
+  'It should return true if the callback returns a truthy value for at least one element in the array.': function() {
+    const result = some([1, 2, 3], function(element) {
+      return element > 2;
+    });
+    eq(result, true);
+  },
+
+  'It should run callback function on each element in the array if each fails the testing function': function() {
+    let numberOfTimesCallbackHasRun = 0;
+    const result = some([1, 2, 3], function(element) {
+      numberOfTimesCallbackHasRun++;
+      return false;
+    });
+    eq(result, false);
+  },
+
+  'It should should skip holes when the callback is run': function() {
+    let numberOfTimesCallbackHasRun = 0;
+    const testArray = [,1,,2,3,4];
+    some(testArray, function(element) {
+      numberOfTimesCallbackHasRun++;
+      return false;
+    });
+    eq(numberOfTimesCallbackHasRun, 4);
+  },
+
+  'It should pass in the ith element as the first argument to the callback': function() {
+    some([1], function(element) {
+      eq(element, 1);
+    })
+  },
+
+  'It should pass in the ith position as the second argument to the callback.': function() {
+    some([1], function(element, index) {
+      eq(index, 0);
+    })
+  },
+
+  'It should pass in the original array as the third argument to the callback.': function() {
+    const testArray = [1, 2, 3];
+    some(testArray, function(element, index, originalArray) {
+      eq(originalArray, testArray);
+    })
+  },
+
+  'It should not run the callback on any elements added to the array after the call to find begins.': function() {
+    const testArray = [1, 2, 3];
+    let numTimesCallbackRan = 0;
+    some(testArray, function() {
+      testArray.push(4);
+      numTimesCallbackRan++;
+      return false;
+    });
+    eq(numTimesCallbackRan, 3);
+  },
+
+  'It should accept an optional this object': function() {
+    some([1], function() {
+        // Inside of here, this should be equal to the configurableThisObject.
+        // this.description should be equal to 'Configurable this object'
+        eq(this.description, 'I should be accessible inside of the callback');
+    }, {description: 'I should be accessible inside of the callback'});
+  },
+
+  'It should run the callback on existing, yet-unvisted element of the array, the callback should visit the new value': function() {
+    const testArray = [1, 2, 3];
+    const result = some(testArray, function(element, index) {
+      testArray[2] = 4;
+      return element < 0;
+    });
+    eq(result, false);
+  },
+
+  'It should not run the callback on deleted elements.': function() {
+    const testArray = [1, 2, 3];
+    let numTimesCallbackRan = 0
+    some(testArray, function(element, index) {
+      if(index === 0) {
+        console.log('Before:', testArray);
+        delete testArray[2];
+        console.log('After:', testArray);
+      }
+      numTimesCallbackRan++;
+      return false;
+    })
+    eq(numTimesCallbackRan, 2)
+  },
+
+  'It should not mutate the original array being called upon.': function() {
+    const originalArray = [1, 2, 3];
+    some(originalArray, function(element, index, array) {
+      return element < 3;
+      eq(originalArray, array)
+    });
+  },
+
+  'It should return false on an empty array.': function() {
+    const testArray = [];
+    const result = some(testArray, function(element, index, array) {
+      if(testArray.length === 0) {
+        return false;
+      }
+      eq(result, false);
+    });
+  },
+
+  'It should return true if the callback function returns a truthy value for at least one element in the array.': function() {
+    const testArray = [1, 2, 3];
+    const result = some(testArray, function(element) {
+      return element > 2;
+    });
+    eq(result, true);
+  }, 
+
+  'It should return false if the callback function returns a falsey value.': function() {
+    const testArray = [1, 2, 3];
+    const result = some(testArray, function(element) {
+      return element > 4;
+    });
+    eq(result, false);
+  }
+});
+
+
+
+</script>
+
+
