@@ -31,7 +31,7 @@ callback
 initialValue
 
 CALLBACK PARAMETERS
-previousValue
+accumulator
 currentValue
 index
 array
@@ -45,10 +45,10 @@ The value that results from the reduction.
 TESTS
 DONE: If initialValue, callback should run array.length times.
 DONE: If no initialValue, callback should run array.length -1 times.
-DONE: If initialValue, previousValue should start with initialValue.
+DONE: If initialValue, accumulator should start with initialValue.
 DONE: If initialValue, currentValue should start with array[0].
 DONE: If initialValue, callback will start at index 0.
-DONE: If no initialValue, previousValue should start with array[0].
+DONE: If no initialValue, accumulator should start with array[0].
 DONE: If no initialValue, currentValue should start with array[1].
 DONE: If no initialValue, callback will start at index 1.
 DONE: If initialValue and array is empty, return initialValue without calling callback.
@@ -57,15 +57,15 @@ DONE: It should actually reduce.
 DONE: If initialValue, it should exclude hole.
 DONE: If no initialValue, it should exclude holes too.
 DONE: If array is empty and no initialValue, throw TypeError.
-DONE: It should pass in the ith element as the first argument to the callback.
-DONE: It should pass in the ith position as the second argument to the callback.
+DONE: It should pass in the ith element as the second argument to the callback.
+DONE: It should pass in the ith position as the third argument to the callback.
 DONE: It should pass array as fourth argument to callback.
 */
 
 function reduceRight(array, callback, initialValue) {
-  let startingIndex = 0;
   let resultSoFar = initialValue;
   const length = array.length;
+  let startingIndex = length - 1
   const arrayIndexes = Object.keys(array);
 
   // Detects if no initial value
@@ -82,16 +82,16 @@ function reduceRight(array, callback, initialValue) {
       return onlyElement;
     }
 
-    // We want to skip holes at the beginning of the array.
-    // While you see holes at the beginning, just keep incrementing startingIndex
+    // We want to skip holes at the end of the array.
+    // While you see holes at the end, just keep decrementing startingIndex
     // While something is true, keep doing it. As soon as it's not, stop.
     while(startingIndex in array === false && startingIndex < length) {
-      startingIndex++;
+      startingIndex--;
     }
 
     resultSoFar = array[startingIndex];
-    startingIndex++;
-
+    startingIndex--;
+    
   } else {
     // Has initial value
     if(arrayIndexes.length === 0) {
@@ -100,8 +100,7 @@ function reduceRight(array, callback, initialValue) {
     
   }
 
-  
-  for(i = startingIndex; i < length; i++) {
+  for(i = startingIndex; i >=0; i--) {
     if(i in array) {
       resultSoFar = callback(resultSoFar, array[i], i, array);
     }
@@ -126,40 +125,40 @@ tests({
     })
     eq(numberOfTimesCallbackHasRun, 0);
   },
-  'If initialValue, previousValue should start with initialValue': function() {
-    reduceRight([1], function(previousValue) {
-      eq(previousValue, 0);
+  'If initialValue, accumulator should start with initialValue': function() {
+    reduceRight([1], function(accumulator) {
+      eq(accumulator, 0);
     }, 0);
   },
-  'If initialValue, currentValue should start with array[0].': function() {
-    reduceRight([1], function(previousValue, currentValue) {
+  'If initialValue, currentValue should start with array[array.length-1].': function() {
+    reduceRight([1], function(accumulator, currentValue) {
       eq(currentValue, 1);
     }, 0);
   },
-  'If initialValue, callback will start at index 0.': function() {
-    reduceRight([1], function(previousValue, currentValue, currentIndex) {
+  'If initialValue, callback will start at the last index.': function() {
+    reduceRight([1], function(accumulator, currentValue, currentIndex) {
       eq(currentIndex, 0);
     }, 0);
   },
-  'If no initialValue, previousValue should start with array[0]': function() {
-    reduceRight([1, 2], function(previousValue) {
-      eq(previousValue, 1);
+  'If no initialValue, accumulator should start with array[array.length-1]': function() {
+    reduceRight([1, 2], function(accumulator) {
+      eq(accumulator, 2);
     });
   },
-  'If no initialValue, currentValue should start with array[1].': function() {
-    reduceRight([1, 2], function(previousValue, currentValue) {
-      eq(currentValue, 2);
+  'If no initialValue, currentValue should start with array[array.length-2].': function() {
+    reduceRight([1, 2], function(accumulator, currentValue) {
+      eq(currentValue, 1);
     });
   },
-  'If no initialValue, callback will start at index 1.': function() {
-    reduceRight([1, 2], function(previousValue, currentValue, currentIndex) {
-      eq(currentIndex, 1);
+  'If no initialValue, callback will start at index[array.length-2].': function() {
+    reduceRight([1, 2], function(accumulator, currentValue, currentIndex) {
+      eq(currentIndex, 0);
     });
   },
   'If initialValue and array is empty, return initialValue without calling callback.': function() {
     let numberOfTimesCallbackHasRun = 0;
     const initialValue = 0;
-    const reduceResult = reduceRight([,,,], function(previousValue, currentValue, currentIndex) {
+    const reduceResult = reduceRight([,,,], function(accumulator, currentValue, currentIndex) {
       numberOfTimesCallbackHasRun++;
     }, initialValue);
     eq(reduceResult, initialValue);
@@ -180,13 +179,13 @@ tests({
     eq(sum, 6);
   },
   'If initialValue, it should exclude hole.': function() {
-    const sum = reduceRight([,1,,2, 3,], function(a, b) {
+    const sum = reduceRight([,1,,2, 3,,], function(a, b) {
       return a + b;
     }, 0);
     eq(sum, 6);
   },
   'If no initialValue, it should exclude holes too.': function() {
-    const sum = reduceRight([,1,,2, 3,], function(a, b) {
+    const sum = reduceRight([,1,,2, 3,,], function(a, b) {
       return a + b;
     },);
     eq(sum, 6);
@@ -200,7 +199,7 @@ tests({
     }
     eq(isTypeError, true);
   },
-  'It should pass in the ith element as the first argument to the callback.': function() {
+  'It should pass in the ith element as the second argument to the callback.': function() {
     const testArray = [1]
     reduceRight(testArray, function(element) {
       eq(element, 1);
@@ -214,7 +213,7 @@ tests({
   },
   'It should pass array as fourth argument to callback.': function(){
     const testArray = [1, 2]
-    reduceRight(testArray, function(previousValue, currentValue, currentIndex, arrayToReduce) {
+    reduceRight(testArray, function(accumulator, currentValue, currentIndex, arrayToReduce) {
       eq(arrayToReduce, testArray);
     });
   }
