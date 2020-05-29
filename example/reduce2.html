@@ -52,7 +52,6 @@ function reduce(array, callback, initialValue) {
     // We want to skip holes at the beginning of the array.
     // While you see holes at the beginning, just keep incrementing startingIndex
     // While something is true, keep doing it. As soon as it's not, stop.
-
     while (startingIndex in array === false && startingIndex < length ) {
       // need to add an end condition or else this will keep looping on an empty array
       //[, , , ] --> length = 3
