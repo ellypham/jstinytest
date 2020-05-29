@@ -170,6 +170,18 @@ tests({
     }
     eq(isTypeError, true);
   },
+  'It should pass in the ith element as the first argument to the callback.': function() {
+    const testArray = [1]
+    reduce(testArray, function(element) {
+      eq(element, 1);
+    });
+  },
+  'It should pass in the ith position as the second argument to the callback': function() {
+    const testArray = [1]
+    reduce(testArray, function(index) {
+      eq(index, 0);
+    });
+  },
   'It should pass array as fourth argument to callback.': function(){
     const testArray = [1, 2]
     reduce(testArray, function(previousValue, currentValue, currentIndex, arrayToReduce) {
