@@ -57,6 +57,8 @@ DONE: It should actually reduce.
 DONE: If initialValue, it should exclude hole.
 DONE: If no initialValue, it should exclude holes too.
 DONE: If array is empty and no initialValue, throw TypeError.
+DONE: It should pass in the ith element as the first argument to the callback.
+DONE: It should pass in the ith position as the second argument to the callback.
 DONE: It should pass array as fourth argument to callback.
 */
 
@@ -197,6 +199,18 @@ tests({
       isTypeError = (e instanceof TypeError);
     }
     eq(isTypeError, true);
+  },
+  'It should pass in the ith element as the first argument to the callback.': function() {
+    const testArray = [1]
+    reduceRight(testArray, function(element) {
+      eq(element, 1);
+    });
+  },
+  'It should pass in the ith position as the second argument to the callback': function() {
+    const testArray = [1]
+    reduceRight(testArray, function(index) {
+      eq(index, 0);
+    });
   },
   'It should pass array as fourth argument to callback.': function(){
     const testArray = [1, 2]
