@@ -1,0 +1,111 @@
+<script src="../simpletest.js"></script>
+<script>
+
+/*
+PROTOTYPE IMPLEMENTATION
+  const beasts = ['ant', 'bison', 'camel', 'duck', 'bison'];
+
+
+  function indexOf(array, searchEl) {
+    for(i = 0; i < array.length; i++) {
+      if(searchEl === array[i]) {
+        return i;
+      } else {
+        return -1
+      }
+    }
+  }
+
+  console.log(indexOf(beasts, 'giraffe'))
+
+
+The indexOf() method returns the first index at which a given element can be found in the array, or -1 if it is not present.
+
+SYNTAX
+arr.indexOf(array, searchElement[, fromIndex])
+
+PARAMETERS
+searchElement
+fromIndex (optional)
+
+RETURN VALUE
+The first index of the element in the array; -1 if not found.
+*/
+
+
+/*
+TESTS
+It should return the first index of the searchElement in the array.
+It should return -1 if the searchElement is not found in the array.
+It should start searching at the index passed in as the 3rd parameter.
+If the fromIndex parameter value is a negative number, it is taken as the offset from the end of the array.
+It should return -1 if the fromIndex is greater than or equal to the array's length.
+
+It should search the array from front to back of the provided fromIndex is negative.
+
+It should search the whole array if no index is provided.
+It should search the whole array if the provided index is 0.
+*/
+
+function indexOf(array, searchEl, fromIndex) {
+  let startIndex = 0;
+  const length = array.length;
+
+  if(fromIndex) {
+    startIndex = fromIndex
+  }
+
+  if(fromIndex && fromIndex === -1) {
+    startIndex = length + fromIndex
+
+  }
+
+  for(i = startIndex; i < length; i++) {
+    if(searchEl === array[i]) {
+      return i;
+    } 
+  }
+  return -1;
+}
+
+
+
+tests({
+  'It should return the first index of the searchElement in the array.': function() {
+    const result = indexOf([1, 2, 3], 2);
+    eq(result, 1);
+  },
+  'It should return -1 if the searchElement is not found in the array.': function() {
+    const result = indexOf([1, 2, 3], 4);
+    eq(result, -1)
+  },
+  'It should start searching at the index passed in as the 3rd parameter.': function() {
+    const result = indexOf([1, 1, 1], 1, 2);
+    eq(result, 2);
+  },
+  'If the fromIndex parameter value is a negative number, it is taken as the offset from the end of the array.': function() {
+    const result = indexOf([1, 2, 3, 4], 3, -1);
+    eq(result, -1)
+  },
+  'It should return -1 if the fromIndex is greater than or equal to the array/s length.': function() {
+    const result = indexOf([1, 2, 3], 2, 4);
+    eq(result, -1);
+  },
+  'It should search the whole array if no index is provided.': function() {
+    const result = indexOf([1, 2, 3], 3);
+    eq(result, 2);
+  },
+  'It should search the whole array if the provided index is 0.': function() {
+    const result = indexOf([1, 2, 3], 3, 0);
+    eq(result, 2);
+  }
+
+
+});
+
+
+
+</script>
+
+
+
