@@ -20,7 +20,7 @@ Iterators:
 Accessors:
 
 -   [x] Array.prototype.concat()
--   [ ] Array.prototype.indexOf()
+-   [x] Array.prototype.indexOf()
 -   [ ] Array.prototype.lastIndexOf()
 -   [ ] Array.prototype.includes()
 -   [ ] Array.prototype.slice()
