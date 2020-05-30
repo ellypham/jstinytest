@@ -7,19 +7,19 @@ The purpose of this project is to recreate array methods piece-by-piece using te
 
 Iterators:
 
--   [ ] Array.prototype.forEach()
--   [ ] Array.prototype.filter()
--   [ ] Array.prototype.map()
--   [ ] Array.prototype.reduce()
--   [ ] Array.prototype.find()
--   [ ] Array.prototype.findIndex()
--   [ ] Array.prototype.every()
--   [ ] Array.prototype.some()
--   [ ] Array.prototype.reduceRight()
+-   [x] Array.prototype.forEach()
+-   [x] Array.prototype.filter()
+-   [x] Array.prototype.map()
+-   [x] Array.prototype.reduce()
+-   [x] Array.prototype.find()
+-   [x] Array.prototype.findIndex()
+-   [x] Array.prototype.every()
+-   [x] Array.prototype.some()
+-   [x] Array.prototype.reduceRight()
 
 Accessors:
 
--   [ ] Array.prototype.concat()
+-   [x] Array.prototype.concat()
 -   [ ] Array.prototype.indexOf()
 -   [ ] Array.prototype.lastIndexOf()
 -   [ ] Array.prototype.includes()
