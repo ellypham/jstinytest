@@ -21,8 +21,8 @@ Accessors:
 
 -   [x] Array.prototype.concat()
 -   [x] Array.prototype.indexOf()
--   [ ] Array.prototype.lastIndexOf()
--   [ ] Array.prototype.includes()
+-   [x] Array.prototype.lastIndexOf()
+-   [x] Array.prototype.includes()
 -   [ ] Array.prototype.slice()
 -   [ ] Array.prototype.join()
 
