@@ -1,0 +1,121 @@
+<script src="../simpletest.js"></script>
+<script>
+
+/*
+PROTOTYPE IMPLEMENTATION
+  const array = [1, 2, 3];
+  const pets = ['cat', 'dog', 'bat'];
+
+  function includes2(array, findVal) {
+    for(i = 0; i < array.length; i++) {
+      if(findVal === array[i]) {
+        return true
+      }
+    }
+
+    return false;
+  }
+
+The includes() method determines whether an array includes a certain value among its entries, returning true or false as appropriate.
+
+SYNTAX
+arr.includes(array, valueToFind[, fromIndex])
+
+PARAMETERS
+valueToFind
+fromIndex (optional)
+
+RETURN VALUE
+A Boolean which is true if the value valueToFind is found within the array (or the part of the array indicated by the index fromIndex, if specified).
+*/
+
+/*
+
+TESTS
+DONE: It should return true if the value valueToFind is found within the array.
+DONE: It should return false if the value valueToFind is not found within the array.
+DONE: It should start searching at the index passed in as the 3rd parameter.
+DONE: It should return false if the fromIndex is greater than or equal to the array/s length.
+DONE: If fromIndex is negative, the computed index is calculated to be used as a position in the array at which to begin searching for valueToFind.
+DONE: If the computed index is less or equal than -1 * arr.length, the entire array will be searched.
+DONE: It should search the whole array if no index is provided.
+DONE: It should search the whole array if the provided index is 0.
+DONE: Values of zero are all considered to be equal, regardless of sign. (-0 is considered to be equal to both 0 and +0).
+DONE: It should return true if the valueToFind is in the array using Object.is comparison.
+
+*/
+
+function includes(array, findVal, fromIndex) {
+  let startIndex = 0;
+  const length = array.length;
+
+  if(fromIndex) {
+    startIndex = fromIndex;
+  }
+
+  if(fromIndex && fromIndex < 0) {
+    let computedIndex = length + fromIndex;
+    if(computedIndex >=0) {
+      startIndex = computedIndex;
+    } else {
+      startIndex = 0;
+    }
+  }
+
+  for(i = startIndex; i < length; i++) {
+    if(Object.is(findVal, array[i]) ||  findVal === array[i]) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+tests({
+  'It should return true if the value valueToFind is found within the array.': function() {
+    const result = includes([1, 2, 3], 2);
+    eq(result, true)
+  },
+  'It should return false if the value valueToFind is not found within the array.': function() {
+    const result = includes([1, 2, 3], 4);
+    eq(result, false)
+  },
+  'It should start searching at the index passed in as the 3rd parameter.': function() {
+    const result = includes([1, 1, 2, 3, 4], 1, 2);
+    eq(result, false);
+  },
+  'It should return false and not search the array if the fromIndex is greater than or equal to the array/s length.': function() {
+    const result = includes([1, 2, 3, 4], 3, 4);
+    eq(result, false)
+  },
+  'If fromIndex is negative, the computed index is calculated to be used as a position in the array at which to begin searching for valueToFind.': function() {
+  },
+  'If the computed index is less or equal than -1 * arr.length, the entire array will be searched.': function() {
+    const result = includes([1, 1, 2, 3], 1, -100);
+    eq(result, true)
+  },
+  'It should search the whole array if no index is provided.': function() {
+    const result = includes([1, 2, 3, 4], 4);
+    eq(result, true)
+  },
+  'It should search the whole array if the provided index is 0.': function() {
+    const result = includes([1, 2, 3, 4], 4, 0);
+    eq(result, true)
+  },
+  'Values of zero are all considered to be equal, regardless of sign. (-0 is considered to be equal to both 0 and +0).': function () {
+    var result = includes([1], 1);
+    eq(result, true);
+
+    var result2 = includes([-0], 0);
+    eq(result2, true);
+
+    var result3 = includes([+0], -0);
+    eq(result3, true);
+  },
+'It should return true if the valueToFind is in the array using Object.is comparison.': function () {
+      var result = includes([1, 2, NaN], NaN);
+      eq(result, true);
+    },
+});
+
+</script>
