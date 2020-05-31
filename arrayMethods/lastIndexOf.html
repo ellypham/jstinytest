@@ -55,15 +55,20 @@ If the calculated index is less than 0, -1 is returned, i.e. the array will not 
 
 */
 
-function lastIndexOf(array, searchEl) {
+function lastIndexOf(array, searchEl, fromIndex) {
   const length = array.length
   let startIndex = length - 1;
-  
+
+  if(fromIndex) {
+    startIndex = fromIndex;
+  }
+
   for(i = startIndex; i >=0; i--) {
     if(searchEl === array[i]) {
       return i;
     }
   }
+  return -1;
 }
 
 
@@ -73,18 +78,15 @@ tests({
     eq(result, 1);
   },
   'It should return -1 if the searchElement is not found in the array.': function() {
-    fail();
-    const result = indexOf([1, 2, 3], 4);
+    const result = lastIndexOf([1, 2, 3], 4);
     eq(result, -1)
   },
   'It should start searching at the index passed in as the 3rd parameter.': function() {
-    fail();
-    const result = indexOf([1, 1, 1], 1, 2);
+    const result = lastIndexOf([1, 1, 1, 1, 1], 1, 2);
     eq(result, 2);
   },
   'If the fromIndex parameter value is a negative number, it is taken as the offset from the end of the array.': function() {
-    fail();
-    const result = indexOf([1, 2, 3, 4], 3, -1);
+    const result = lastIndexOf([1, 2, 3, 4], 3, -1);
     eq(result, -1)
   },
   'It should search the entire array if the fromIndex is greater than or equal to the array/s length.': function() {
