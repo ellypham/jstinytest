@@ -60,7 +60,7 @@ function indexOf(array, searchEl, fromIndex) {
   for(i = startIndex; i < length; i++) {
     if(searchEl === array[i]) {
       return i;
-    } 
+    }
   }
   return -1;
 }
@@ -69,7 +69,7 @@ function indexOf(array, searchEl, fromIndex) {
 
 tests({
   'It should return the first index of the searchElement in the array.': function() {
-    const result = indexOf([1, 2, 3], 2);
+    const result = indexOf([1, 2, 3, 2], 2);
     eq(result, 1);
   },
   'It should return -1 if the searchElement is not found in the array.': function() {
@@ -89,12 +89,12 @@ tests({
     eq(result, -1);
   },
   'It should search the whole array if no index is provided.': function() {
-    const result = indexOf([1, 2, 3], 3);
-    eq(result, 2);
+    const result = indexOf([1, 2, 3, 2], 2);
+    eq(result, 1);
   },
   'It should search the whole array if the provided index is 0.': function() {
-    const result = indexOf([1, 2, 3], 3, 0);
-    eq(result, 2);
+    const result = indexOf([1, 2, 3, 2], 2, 0);
+    eq(result, 1);
   }
 
 
