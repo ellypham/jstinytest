@@ -14,7 +14,7 @@ PROTOTYPE IMPLEMENTATION
     }
 
     if(fromIndex && fromIndex < 0) {
-      startIndex = length + fromIndex; 
+      startIndex = length + fromIndex;
     }
 
     for(i = startIndex; i >=0; i--) {
@@ -63,6 +63,10 @@ function lastIndexOf(array, searchEl, fromIndex) {
     startIndex = fromIndex;
   }
 
+  if(fromIndex && fromIndex >= length ) {
+    startIndex = length - 1;
+  }
+
   for(i = startIndex; i >=0; i--) {
     if(searchEl === array[i]) {
       return i;
@@ -74,8 +78,8 @@ function lastIndexOf(array, searchEl, fromIndex) {
 
 tests({
   'It should return the last index of the searchElement in the array.': function() {
-    const result = lastIndexOf([1, 2, 3], 2);
-    eq(result, 1);
+    const result = lastIndexOf([2, 1, 2, 3], 2);
+    eq(result, 2)
   },
   'It should return -1 if the searchElement is not found in the array.': function() {
     const result = lastIndexOf([1, 2, 3], 4);
@@ -90,24 +94,17 @@ tests({
     eq(result, -1)
   },
   'It should search the entire array if the fromIndex is greater than or equal to the array/s length.': function() {
-    fail();
-    const result = indexOf([1, 2, 3], 2, 4);
-    eq(result, -1);
+    const result = lastIndexOf([1, 2, 3], 2, 4);
+    eq(result, 1);
   },
   'It should search the whole array if no index is provided  (arr.length - 1).': function() {
-    fail();
-  },
-  'It should search the whole array if no index is provided.': function() {
-    fail();
-    const result = indexOf([1, 2, 3], 3);
-    eq(result, 2);
+    const result = lastIndexOf([2, 1, 2, 3], 2);
+    eq(result, 2)
   },
   'It should search the whole array if the provided index is 0.': function() {
-    fail();
-    const result = indexOf([1, 2, 3], 3, 0);
-    eq(result, 2);
+    const result = lastIndexOf([2, 1, 2, 3], 2, 0);
+    eq(result, 2)
   }
-
 
 });
 
