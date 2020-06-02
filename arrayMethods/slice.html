@@ -51,11 +51,8 @@ DONE: If end is greater than the length of the sequence, slice extracts through 
 DONE: It should not mutate the original array
 DONE: It should return an array
 DONE: It should return a new array
-
-For object references (and not the actual object), slice copies object references into the new array. Both the original and new array refer to the same object. If a referenced object changes, the changes are visible to both the new and original arrays.
-
-For strings, numbers and booleans (not String, Number and Boolean objects), slice copies the values into the new array. Changes to the string, number, or boolean in one array do not affect the other array.
-
+DONE: For object references (and not the actual object), slice copies object references into the new array.
+DONE: For strings, numbers and booleans (not String, Number and Boolean objects), slice copies the values into the new array.
 If a new element is added to either array, the other array is not affected.
 
 
@@ -157,10 +154,31 @@ tests({
     eq(testArray != result, true);
   },
   'For object references (and not the actual object), slice copies object references into the new array.': function() {
-    fail();
+    const testObj = { name: "I am an object." };
+    const testArray = [testObj, 2, 3];
+    const result = slice(testArray);
+    testObj.name = "I am an object too.";
+    eq(result[0].name, "I am an object too.");
   },
   'For strings, numbers and booleans (not String, Number and Boolean objects), slice copies the values into the new array.': function() {
-    fail();
+    const testPrimitive1 = 1;
+    const testPrimitive2 = 'string';
+    const testPrimitive3 = true;
+    const testArray = [1, "string", true];
+    const result = slice(testArray);
+    eq(result[0], 1);
+    eq(result[1], 'string');
+    eq(result[2], true);
+    eq(typeof result[0] === 'object', false);
+    eq(typeof result[1] === 'object', false);
+    eq(typeof result[2] === 'object', false);
+  },
+  'If a new element is added to either array, the other array is not affected.': function() {
+    const testArray = [1, 2, 3];
+    const result = slice(testArray);
+    result.push(4);
+    eq(result.length, 4);
+    eq(testArray.length, 3);
   }
 });
 
