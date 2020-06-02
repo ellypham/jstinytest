@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<script src="../simpletest.js"></script>
+<script>
+
+/*
+PROTOTYPE IMPLEMENTATION
+  const elements = ['Fire', 'Air', 'Water'];
+
+  function join(array, separator) {
+    let sep;
+    let result = '';
+
+    if(separator === undefined) {
+      sep = ',';
+    }
+
+    for(i = 0; i < array.length; i++) {
+      if(array[i] === undefined || null) {
+        array[i] = '';
+      }
+
+      result += array[i];
+
+      if(i < array.length - 1) {
+        result += sep;
+      }
+    }
+
+
+    return result;
+  }
+
+  console.log(join(elements))
+
+
+The join() method creates and returns a new string by concatenating all of the elements in an array (or an array-like object), separated by commas or a specified separator string. If the array has only one item, then that item will be returned without using the separator.
+
+SYNTAX
+arr.join(array, [separator])
+
+PARAMETERS
+separator (optional)
+
+RETURN VALUE
+A string with all array elements joined. If arr.length is 0, the empty string is returned.
+*/
+
+/*
+
+TESTS
+DONE: If separator is omitted, the array elements are separated with a comma (",").
+DONE: It should return a string with all elements joined.
+DONE: Separator parameter should be a string.
+DONE: It should accept an optional separator parameter.
+DONE: If separator is an empty string, all elements are joined without any characters in between them.
+DONE: If the array has only one item, then that item will be returned without using the separator.
+DONE: If arr.length is 0, the empty string is returned.
+
+*/
+
+function join(array, separator) {
+  let result = '';
+  let sep;
+
+  if(separator === undefined) {
+    sep = ',';
+  } else {
+    sep = separator;
+  }
+
+  for(i = 0; i < array.length; i++) {
+    if(array[i] === undefined || null) {
+        array[i] = '';
+    }
+
+    result += array[i]
+
+    if(i < array.length -1) {
+      result += sep;
+    }
+  }
+
+  return result;
+}
+
+
+tests({
+  'If separator is omitted, the array elements are separated with a comma (",").': function() {
+    const testArray = [1, 2, 3];
+    const result = join(testArray);
+    eq(result, "1,2,3")
+  },
+  'It should return a string with all elements joined.': function() {
+    const testArray = [1, 2, 3];
+    const result = join(testArray);
+    eq(result, "1,2,3");
+    eq(typeof result === "string", true);
+  },
+  'Separator parameter should be a string.': function() {
+    const testArray = [1, 2, 3];
+    const separator = "-"
+    const result = join(testArray, separator);
+    eq(result, '1-2-3');
+    eq(typeof separator === "string", true);
+  },
+  'It should accept an optional separator parameter.': function() {
+    const testArray = [1, 2, 3];
+    const result = join(testArray, '-');
+    eq(result, "1-2-3");
+  },
+  'If separator is an empty string, all elements are joined without any characters in between them.': function() {
+    const testArray = [1, 2, 3];
+    const result = join(testArray, "");
+    eq(result, "123");
+  },
+  'If the array has only one item, then that item will be returned without using the separator.': function() {
+    const testArray = [1];
+    const result = join(testArray);
+    eq(result, "1")
+  },
+  'If arr.length is 0, the empty string is returned.': function() {
+    const testArray = [];
+    const result = join(testArray);
+    eq(result, "")
+  }
+});
+
+</script>
