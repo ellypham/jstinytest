@@ -23,8 +23,8 @@ Accessors:
 -   [x] Array.prototype.indexOf()
 -   [x] Array.prototype.lastIndexOf()
 -   [x] Array.prototype.includes()
--   [X] Array.prototype.slice()
--   [ ] Array.prototype.join()
+-   [x] Array.prototype.slice()
+-   [x] Array.prototype.join()
 
 Mutators
 
