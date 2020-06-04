@@ -56,20 +56,16 @@ function push(array, ...elements) {
     if (typeof array === "string" || Object.prototype.toString.call(this) === "[object String]") {
       throw new TypeError("strings cannot be used");
     }
-    // It can be used with call() or apply() on objects resembling arrays.
+    // It can be used with call() or apply()
     // push.call(array, 1) ---> array would be 'this' and 1 is the argument
     if (Object.prototype.toString.call(this) !== "[object Window]") {
-      console.log('this', this)
       array = this;
-      // Use Object.keys so that you can count the length of the object because you cannot use .length on an object
-      counter = Object.keys(array).length;
-      console.log('counter', counter)
+      counter = array.length;
 
       // i is at 0 here because the array/object is assigned to this, the arguments in this case are the elements
       // ex push.call(array, 1, 2) -> array = this and 1, 2 are the arguments, arguments.length = 2
       // ex push.call(array, [1, 2]) -> array = this and [1, 2] are the arguments, arguments.length = 2
       for (i = 0; i < arguments.length; i++) {
-        console.log('arguments', arguments)
         array[counter] = arguments[i];
         counter++;
       }
@@ -77,13 +73,16 @@ function push(array, ...elements) {
     }
 
     counter = array.length;
-    console.log('counter', counter)
+
     // i is at 1 because arguments[0] is the array so we want to start at arguments[1] to get the element
     // ex push(array, 1, 2) -> arguments[0] = array, arguments[1] = 1, arguments[2] = 2, arguments.length = 3
     for (i = 1; i < arguments.length; i++) {
-      console.log('arguments[0]', arguments[0])
       array[counter] = arguments[i];
       counter++;
+      // can be used on objects resembling arrays. If an object has a length property, increment { 1: 1, 2: 2, length: 2 }
+      if(typeof array === "object" && Array.isArray(array) === false) {
+        array.length++;
+      }
     }
 
     return array.length;
@@ -126,7 +125,6 @@ tests({
 			length: "string"
 		};
     push(testArray, 1, 2);
-    eq(Object.keys(testArray).length, 3);
     eq(testArray[0], 1);
     eq(testArray[1], 2);
 
@@ -135,20 +133,25 @@ tests({
     const testArray = {};
     eq(testArray.length === undefined, true);
     push(testArray, 1, 2);
-    eq(Object.keys(testArray).length, 3);
-    eq(testArray.length, 0);
+    eq(testArray.length, 2);
     eq(testArray[0], 1);
     eq(testArray[1], 2);
  },
+ 'It should work on objects': function() {
+    const testArray = {0:'dog',1:'bob',length:2};
+    const result = push(testArray, 2);
+    eq(testArray[2], 2);
+    eq(testArray.length, 3);
+  },
  'It can be called with call': function () {
-    var a = [0];
+    const a = [0];
     const result = push.call(a, 1);
     eq(a[0], 0);
     eq(a[1], 1);
     eq(result, 2);
   },
   'It can be called with apply': function () {
-    var a = [0];
+    const a = [0];
     const result = push.apply(a, [1, 2]);
     eq(a[0], 0);
     eq(a[1], 1);
