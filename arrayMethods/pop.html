@@ -1,0 +1,110 @@
+
+<!DOCTYPE html>
+<script src="../simpletest.js"></script>
+<script>
+
+/*
+PROTOTYPE IMPLEMENTATION
+  const plants = ['broccoli', 'cauliflower', 'cabbage', 'kale', 'tomato'];
+
+  function pop(array) {
+    let poppedElement = array[array.length-1];
+    delete array[array.length -1]
+    array.length--;
+    return poppedElement;
+  }
+
+  console.log(pop(plants))
+  console.log(plants)
+
+The pop() method removes the last element from an array and returns that element. This method changes the length of the array.
+
+SYNTAX
+pop(array)
+
+RETURN VALUE
+The removed element from the array; undefined if the array is empty.
+*/
+
+/*
+
+TESTS
+DONE: It should remove the last element from an array.
+DONE: It should return the removed elements value.
+DONE: It should decrement the length value of the array by 1.
+DONE: It should return undefined if called on an empty array.
+DONE: It can be called with call.
+DONE: It can be called with apply.
+DONE: It should TypeError on non arrays
+
+Objects which do not contain a length property reflecting the last in a series of consecutive, zero-based numerical properties may not behave in any meaningful manner.
+
+*/
+
+function pop(array) {
+  if (!Array.isArray(array) && !this.length) {
+    throw new TypeError('Not an array.');
+  }
+
+  if(Object.prototype.toString.call(this) !== "[object Window]") {
+    array = this;
+  }
+
+  if(array.length === 0) {
+    return undefined;
+  }
+
+  const poppedElement = array[array.length - 1];
+  delete array[array.length -1];
+  array.length--;
+  return poppedElement;
+}
+
+tests({
+'It should remove the last element from an array.': function() {
+  const testArray = [1, 2, 3];
+  const result = pop(testArray);
+  eq(testArray[2] === undefined, true);
+},
+'It should return the removed elements value.': function() {
+  const testArray = [1, 2, 3];
+  const result = pop(testArray);
+  eq(result, 3)
+
+},
+'It should decrement the length value of the array by 1.': function() {
+  const testArray = [1, 2, 3];
+  eq(testArray.length, 3)
+  pop(testArray);
+  eq(testArray.length, 2);
+},
+'It should return undefined if called on an empty array.': function() {
+  const testArray = [];
+  result = pop(testArray);
+  eq(result, undefined);
+},
+'It can be called with call': function () {
+  const testArray = {0:'dog',1:'bob',length: 2};
+  const result = pop.call(testArray);
+  eq(result, 'bob');
+  eq(testArray.length, 1);
+  },
+'It can be called with apply': function () {
+  const testArray = {0:'dog',1:'bob',length: 2};
+  const result = pop.call(testArray);
+  eq(result, 'bob');
+  eq(testArray.length, 1);
+},
+'It should TypeError on non arrays': function() {
+  const testArray = {0:1,1:2};
+  try {
+      const result = pop.apply(testArray);
+  } catch(e) {
+      eq(e instanceof TypeError, true);
+  }
+}
+});
+
+</script>
+
+
