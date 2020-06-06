@@ -37,8 +37,6 @@ DONE: It can be called with call.
 DONE: It can be called with apply.
 DONE: It should TypeError on non arrays
 
-Objects which do not contain a length property reflecting the last in a series of consecutive, zero-based numerical properties may not behave in any meaningful manner.
-
 */
 
 function pop(array) {
@@ -98,7 +96,7 @@ tests({
 'It should TypeError on non arrays': function() {
   const testArray = {0:1,1:2};
   try {
-      const result = pop.apply(testArray);
+      const result = shift.apply(testArray);
   } catch(e) {
       eq(e instanceof TypeError, true);
   }
