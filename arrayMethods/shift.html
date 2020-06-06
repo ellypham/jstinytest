@@ -1,0 +1,141 @@
+
+<!DOCTYPE html>
+<script src="../simpletest.js"></script>
+<script>
+
+/*
+PROTOTYPE IMPLEMENTATION
+  const array1 = [1, 2, 3];
+
+  function shift(array) {
+    const shiftArray = array[0]
+    delete array[0];
+
+    for(i = 0; i < array.length; i++) {
+      array[i] = array[i + 1];;
+
+    }
+
+    array.length--;
+
+    return shiftArray;
+  }
+
+  console.log(shift(array1))
+  console.log(array1)
+
+The shift() method removes the first element from an array and returns that removed element. This method changes the length of the array.
+
+SYNTAX
+shift(array)
+
+RETURN VALUE
+The removed element from the array; undefined if the array is empty.
+*/
+
+/*
+
+TESTS
+It should remove the zeroth index from an array.
+It should return the removed elements value.
+It should shift the values at consecutive indexes down.
+It should decrement the length value of the array by 1.
+If the length property is 0, undefined is returned.
+It should return undefined if called on an empty array.
+It can be called with call.
+It can be called with apply.
+It should TypeError on non arrays
+
+*/
+
+function shift(array) {
+  let shiftElement;
+
+  if (!Array.isArray(array) && !this.length) {
+    throw new TypeError('Not an array.');
+  }
+
+  if(Object.prototype.toString.call(this) !== "[object Window]") {
+    array = this;
+    if(array.length === 0) {
+      return undefined;
+    }
+
+    shiftElement = array[0]
+    delete array[0];
+    array.length--;
+
+    return shiftElement;
+  }
+
+  if(array.length === 0) {
+    return undefined;
+  }
+
+  shiftElement = array[0];
+  delete array[0];
+
+  for(i = 0; i < array.length; i++) {
+    array[i] = array[i + 1];
+  }
+
+  array.length--;
+
+  return shiftElement;
+}
+
+tests({
+'It should remove the zeroth index from an array.': function() {
+  const testArray = [1, 2, 3];
+  const result = shift(testArray);
+  eq(testArray[0], 2);
+},
+'It should return the removed elements value.': function() {
+  const testArray = [1, 2, 3];
+  const result = shift(testArray);
+  eq(result, 1)
+
+},
+'It should shift the values at consecutive indexes down.': function() {
+  const testArray = [1, 2, 3];
+  eq(testArray[0], 1);
+  const result = shift(testArray);
+  eq(testArray[0], 2)
+},
+'It should decrement the length value of the array by 1.': function() {
+  const testArray = [1, 2, 3];
+  eq(testArray.length, 3)
+  shift(testArray);
+  eq(testArray.length, 2);
+},
+'If the length property is 0, undefined is returned.': function() {
+  const testArray = [];
+  const result = shift(testArray);
+  eq(result, undefined);
+},
+'It can be called with call': function () {
+  // debugger;
+  const testArray = {0:'dog',1:'bob',length: 2};
+  const result = shift.call(testArray);
+  eq(result, 'dog');
+  eq(testArray.length, 1);
+  },
+'It can be called with apply': function () {
+  const testArray = {0:'dog',1:'bob',length: 2};
+  const result = shift.call(testArray);
+  eq(result, 'dog');
+  eq(testArray.length, 1);
+},
+'It should TypeError on non arrays': function() {
+  const testArray = {0:1,1:2};
+  try {
+      const result = shift.apply(testArray);
+  } catch(e) {
+      eq(e instanceof TypeError, true);
+  }
+}
+});
+
+</script>
+
+
