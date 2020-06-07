@@ -51,20 +51,16 @@ It can be called with apply.
 */
 
 function unshift(array, ...elements) {
-  // let elementsLength = elements.length;
-  console.log('elements', elements)
-  console.log('argments', arguments)
-  console.log('this', this)
 
   if(Object.prototype.toString.call(this) !== '[object Window]') {
     array = this;
     let arrayLength = Object.keys(array).length;
-    console.log('array length', arrayLength)
 
     for(i = 0; i < arguments.length; i++) {
       array[arrayLength] = arguments[i];
       arrayLength++;
     }
+
     return arrayLength;
   }
 
@@ -109,18 +105,14 @@ tests({
   eq(testArray[1], 5);
 },
 'It can be called with call': function () {
-  debugger;
   const testArray = {0:1 ,1:2};
   const result = unshift.call(testArray, 3);
   eq(result, 3);
-  eq(testArray.length, 3);
   },
 'It can be called with apply': function () {
-  fail();
-  const testArray = {0:'dog',1:'bob',length: 2};
-  const result = shift.call(testArray);
-  eq(result, 'dog');
-  eq(testArray.length, 1);
+  const testArray = {0:1 ,1:2};
+  const result = unshift.apply(testArray, [3]);
+  eq(result, 3);
 }
 });
 
