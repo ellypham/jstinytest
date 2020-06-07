@@ -1,0 +1,129 @@
+
+<!DOCTYPE html>
+<script src="../simpletest.js"></script>
+<script>
+
+/*
+PROTOTYPE IMPLEMENTATION
+  const array1 = [1, 2, 3];
+
+  function unshift(array, ...elements) {
+    let elementsLength = elements.length;
+
+    for(i = 0; i < elementsLength; i++) {
+      array.length++
+    }
+
+    for(i = array.length - 1; i >= 0; i--) {
+      array[i] = array[i - elementsLength];
+    }
+
+    for(i = 0; i < elementsLength; i++) {
+      array[i] = elements[i];
+    }
+
+    return array.length;
+  }
+
+  console.log(unshift(array1, 4, 5))
+
+The unshift() method adds one or more elements to the beginning of an array and returns the new length of the array.
+
+SYNTAX
+unshift(array, element1[, ...[, elementN]])
+
+PARAMETERS
+elementN - The elements to add to the front of the arr.
+
+RETURN VALUE
+The new length property of the object upon which the method was called.
+*/
+
+/*
+
+TESTS
+It should increment the length value of the array by elements.length.
+It should shift the values at consecutive indexes down.
+It should return the new length property of the array-like object.
+It should insert the given values to the beginnig of an array-like object.
+It can be called with call.
+It can be called with apply.
+*/
+
+function unshift(array, ...elements) {
+  // let elementsLength = elements.length;
+  console.log('elements', elements)
+  console.log('argments', arguments)
+  console.log('this', this)
+
+  if(Object.prototype.toString.call(this) !== '[object Window]') {
+    array = this;
+    let arrayLength = Object.keys(array).length;
+    console.log('array length', arrayLength)
+
+    for(i = 0; i < arguments.length; i++) {
+      array[arrayLength] = arguments[i];
+      arrayLength++;
+    }
+    return arrayLength;
+  }
+
+  for(i = 0; i < elements.length; i++) {
+    array.length++
+  }
+
+  for(i = array.length - 1; i >= 0; i--) {
+    array[i] = array[i - elements.length];
+  }
+
+  for(i = 0; i < elements.length; i++) {
+    array[i] = elements[i];
+  }
+
+  return array.length;
+}
+
+tests({
+'It should increment the length value of the array by elements.length.': function() {
+  const testArray = [1, 2, 3];
+  unshift(testArray, 4, 5);
+  eq(testArray.length, 5);
+
+},
+'It should shift the values at consecutive indexes down.': function() {
+  const testArray = [1, 2, 3];
+  eq(testArray[0], 1)
+  unshift(testArray, 4, 5);
+  eq(testArray[0], 4);
+
+},
+'It should return the new length property of the array-like object.': function() {
+  const testArray = [1, 2, 3];
+  const result = unshift(testArray, 4, 5);
+  eq(result, 5);
+},
+'It should insert the given values to the beginnig of an array-like object.': function() {
+  const testArray = [1, 2, 3];
+  unshift(testArray, 4, 5);
+  eq(testArray[0], 4);
+  eq(testArray[1], 5);
+},
+'It can be called with call': function () {
+  debugger;
+  const testArray = {0:1 ,1:2};
+  const result = unshift.call(testArray, 3);
+  eq(result, 3);
+  eq(testArray.length, 3);
+  },
+'It can be called with apply': function () {
+  fail();
+  const testArray = {0:'dog',1:'bob',length: 2};
+  const result = shift.call(testArray);
+  eq(result, 'dog');
+  eq(testArray.length, 1);
+}
+});
+
+</script>
+
+
