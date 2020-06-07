@@ -1,0 +1,127 @@
+
+<!DOCTYPE html>
+<script src="../simpletest.js"></script>
+<script>
+
+/*
+PROTOTYPE IMPLEMENTATION
+  const array1 = [1, 2, 3, 4];
+
+  function fill(array, value, start, end) {
+    let startIndex = 0;
+    let endIndex = array.length;
+
+    if(start) {
+      startIndex = start;
+    }
+
+    if(end) {
+      endIndex = end;
+    }
+
+    for(i = startIndex; i < endIndex; i++) {
+      array[i] = value;
+    }
+
+    return array;
+  }
+
+  console.log(fill(array1, 0, 2, 4))
+  // expected output: [1, 2, 0, 0]
+
+The fill() method changes all elements in an array to a static value, from a start index (default 0) to an end index (default array.length). It returns the modified array.
+
+SYNTAX
+arr.fill(array, value[, start[, end]])
+
+PARAMETERS
+array
+value
+start (optional)
+end (optional)
+
+RETURN VALUE
+The modified array, filled with value.
+*/
+
+/*
+
+TESTS
+DONE: It should accept a value parameter to fill the array with.
+DONE: It should accept an optional start index parameter.
+DONE: It should accept an optional end index parameter.
+DONE: If no start index parameter is provided, default index is 0.
+DONE: If no end index parameter is provided, default index is arr.length.
+It should return the modified array, filled with value.
+If start is negative, it is treated as array.length + start.
+If end is negative, it is treated as array.length + end.
+It should change the array itself and return it, not a copy of it.
+It does not require that its this value be an Array object.
+If the first parameter is an object, each slot in the array will reference that object.
+
+*/
+
+function fill(array, value, start, end) {
+  let startIndex = 0;
+  let endIndex = array.length;
+
+  if(start) {
+    startIndex = start;
+  }
+
+  if(end) {
+    endIndex = end;
+  }
+
+  for(i = startIndex; i <= endIndex; i++) {
+    array[i] = value;
+  }
+
+  return array;
+}
+
+
+tests({
+'It should accept a value parameter to fill the array with.': function() {
+  const testArray = [1, 2, 3];
+  const value = 2;
+  fill(testArray, value);
+  eq(testArray[0], value);
+  eq(testArray[1], value);
+  eq(testArray[2], value);
+},
+'It should accept an optional start index parameter.': function() {
+  const testArray = [1, 2, 3];
+  const startIndex = 1
+  fill(testArray, 5, startIndex);
+  eq(testArray[0], 1);
+  eq(testArray[startIndex], 5);
+  eq(testArray[2], 5);
+},
+'It should accept an optional end index parameter.': function() {
+  const testArray = [1, 2, 3];
+  const endIndex = 1;
+  fill(testArray, 6, 0, endIndex);
+  eq(testArray[0], 6);
+  eq(testArray[endIndex], 6);
+  eq(testArray[2], 3);
+},
+'If no start index parameter is provided, default index is 0.': function() {
+  const testArray = [1, 2, 3];
+  const startDefault = 0;
+  fill(testArray, 7);
+  eq(testArray[startDefault], 7);
+},
+'If no end index parameter is provided, default index is arr.length.': function() {
+  const testArray = [1, 2, 3];
+  const endDefault = testArray.length;
+  fill(testArray, 7, 1);
+  eq(testArray[0], 1);
+  eq(testArray[1], 7);
+  eq(testArray[endDefault], 7);
+},
+});
+
+</script>
+
+
