@@ -31,7 +31,7 @@ Mutators
 -   [x] Array.prototype.push()
 -   [x] Array.prototype.pop()
 -   [x] Array.prototype.shift()
--   [ ] Array.prototype.unshift()
+-   [x] Array.prototype.unshift()
 -   [ ] Array.prototype.fill()
 -   [ ] Array.prototype.reverse()
 -   [ ] Array.prototype.copyWithin()
