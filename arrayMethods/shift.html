@@ -36,15 +36,15 @@ The removed element from the array; undefined if the array is empty.
 /*
 
 TESTS
-It should remove the zeroth index from an array.
-It should return the removed elements value.
-It should shift the values at consecutive indexes down.
-It should decrement the length value of the array by 1.
-If the length property is 0, undefined is returned.
-It should return undefined if called on an empty array.
-It can be called with call.
-It can be called with apply.
-It should TypeError on non arrays
+DONE: It should remove the zeroth index from an array.
+DONE: It should return the removed elements value.
+DONE: It should shift the values at consecutive indexes down.
+DONE: It should decrement the length value of the array by 1.
+DONE: If the length property is 0, undefined is returned.
+DONE: It should return undefined if called on an empty array.
+DONE: It can be called with call.
+DONE: It can be called with apply.
+DONE: It should TypeError on non arrays
 
 */
 
@@ -114,7 +114,6 @@ tests({
   eq(result, undefined);
 },
 'It can be called with call': function () {
-  // debugger;
   const testArray = {0:'dog',1:'bob',length: 2};
   const result = shift.call(testArray);
   eq(result, 'dog');
