@@ -52,28 +52,47 @@ DONE: It should accept an optional start index parameter.
 DONE: It should accept an optional end index parameter.
 DONE: If no start index parameter is provided, default index is 0.
 DONE: If no end index parameter is provided, default index is arr.length.
-It should return the modified array, filled with value.
-If start is negative, it is treated as array.length + start.
-If end is negative, it is treated as array.length + end.
-It should change the array itself and return it, not a copy of it.
-It does not require that its this value be an Array object.
-If the first parameter is an object, each slot in the array will reference that object.
+DONE: It should return the modified array, filled with value.
+DONE: If start is negative, it is treated as array.length + start.
+DONE: If end is negative, it is treated as array.length + end.
+DONE: It should change the array itself and return it, not a copy of it.
+DONE: It can be applied to an object.
+DONE: If the first parameter is an object, each slot in the array will reference that object.
 
 */
 
-function fill(array, value, start, end) {
-  let startIndex = 0;
-  let endIndex = array.length;
-
-  if(start) {
-    startIndex = start;
+function fill(array, value, startIndex, endIndex) {
+  if(arguments.length < 3) {
+    startIndex = 0;
   }
 
-  if(end) {
-    endIndex = end;
+  if(startIndex < 0) {
+    startIndex = array.length + startIndex;
   }
 
-  for(i = startIndex; i <= endIndex; i++) {
+  if(arguments.length < 4) {
+    endIndex = array.length
+  }
+
+  if(endIndex < 0) {
+    endIndex = array.length + endIndex;
+  }
+
+  if(endIndex) {
+    endIndex++;
+  }
+
+
+  if(Object.prototype.toString.call(this) !== '[object Window]') {
+    endIndex = this.length;
+    for(i = startIndex; i < endIndex; i++) {
+      this[i] = arguments[0];
+    }
+
+    return this;
+  }
+
+  for(i = startIndex; i < endIndex; i++) {
     array[i] = value;
   }
 
@@ -118,8 +137,45 @@ tests({
   fill(testArray, 7, 1);
   eq(testArray[0], 1);
   eq(testArray[1], 7);
-  eq(testArray[endDefault], 7);
+  eq(testArray[endDefault - 1], 7);
 },
+'It should return the modified array, filled with value.': function() {
+  const testArray = [1, 2, 3];
+  fill(testArray, 7, 1, 2);
+  eq(testArray[0], 1);
+  eq(testArray[1], 7);
+  eq(testArray[2], 7);
+},
+'If start is negative, it is treated as array.length + start.': function() {
+  const testArray = [1, 2, 3];
+  fill(testArray, 7, -1);
+  eq(testArray[0], 1);
+  eq(testArray[1], 2);
+  eq(testArray[2], 7);
+},
+'If end is negative, it is treated as array.length + end.': function() {
+  const testArray = [1, 2, 3];
+  fill(testArray, 7, 1, -1);
+  eq(testArray[0], 1);
+  eq(testArray[1], 7);
+  eq(testArray[2], 7);
+},
+'It should change the array itself and return it, not a copy of it.': function() {
+  const testArray = [1, 2, 3];
+  const result = fill(testArray, 7, 1, -1);
+  eq(result, testArray);
+},
+'It can be applied to an object': function() {
+  const testArray = { length: 3 };
+  const result = fill.call(testArray, 4)
+  eq(result[0], 4);
+},
+"It can use an object as a value, in this case each slot in the array will reference that object": function () {
+  const testArray = [1, 2, 3];
+  const person = { name: "Elly" };
+  const result = fill(testArray, person);
+  eq(result[0], person);
+}
 });
 
 </script>
