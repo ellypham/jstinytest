@@ -1,0 +1,86 @@
+
+<!DOCTYPE html>
+<script src="../simpletest.js"></script>
+<script>
+
+/*
+PROTOTYPE IMPLEMENTATION
+  const array1 = ['one', 'two', 'three'];
+
+  function reverse(array) {
+    let count = 0;
+    let tempArray = Array.from(array);
+    for(i = array.length - 1; i >=0; i--) {
+      array[count] = tempArray[i];
+      count++;
+    }
+
+    return array;
+  }
+
+  console.log(reverse(array1));
+
+The reverse() method reverses an array in place. The first array element becomes the last, and the last array element becomes the first.
+
+SYNTAX
+a.reverse(array)
+
+RETURN VALUE
+The reversed array.
+*/
+
+/*
+
+TESTS
+DONE: It should reverse the order of the elements in the array.
+DONE: It should mutate the original array.
+DONE: It can be called with call.
+DONE: It can be called with apply.
+
+
+Objects which do not contain a length property reflecting the last in a series of consecutive, zero-based numerical properties may not behave in any meaningful manner.
+
+*/
+
+function reverse(array) {
+  let count = 0;
+
+  if(Object.prototype.toString.call(this) !== '[object Window]') {
+    array = this;
+  }
+
+  let tempArray = Array.from(array);
+  for(i = array.length - 1; i >=0; i--) {
+    array[count] = tempArray[i];
+    count++;
+  }
+
+  return array;
+}
+
+tests({
+'It should reverse the order of the elements in the array.': function() {
+  const testArray = [1, 2, 3];
+  reverse(testArray);
+  eq(testArray[0], 3);
+},
+'It should mutate the original array.': function() {
+  const testArray = [1, 2, 3];
+  const result = reverse(testArray);
+  eq(testArray === result, true)
+},
+'It can be called with call.': function() {
+  const testArray = {0: 1, 1: 2, 2: 3, length: 3};
+  reverse.call(testArray)
+  eq(testArray[0], 3);
+},
+'It can be called with apply.': function() {
+  const testArray = {0: 1, 1: 2, 2: 3, length: 3};
+  reverse.apply(testArray)
+  eq(testArray[0], 3);
+}
+});
+
+</script>
+
+
