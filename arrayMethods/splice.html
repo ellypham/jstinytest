@@ -1,0 +1,99 @@
+
+<!DOCTYPE html>
+<script src="../simpletest.js"></script>
+<script>
+
+/*
+PROTOTYPE IMPLEMENTATION
+function splice2(array, start, delCount, ...items) {
+      // debugger;
+      let deleteElementsArray = [];
+      let copiedArray = Array.from(array);
+      let arrayLength = array.length;
+      let deleteCount = arrayLength;
+      let tempArray = [];
+      console.log('arguments', arguments)
+      console.log('items length',   items.length)
+
+      // start conditions
+      // in this case no element should be deleted but the method will behave as an adding function
+      if(start > arrayLength) {
+        start = arrayLength;
+      }
+
+      if(start < 0) {
+        start = arrayLength + start;
+        if(start < 0) {
+          start = 0;
+        }
+      }
+
+      if(delCount) {
+        deleteCount = delCount
+      }
+
+      // if it is equal to or greater than the number of elements left in the array, starting at start), then all the elements from start to the end of the array will be deleted.
+      if(deleteCount >= arrayLength - start) {
+        deleteCount = arrayLength;
+      }
+
+      if(start > deleteCount) {
+        deleteCount = deleteCount + start;
+      }
+
+
+      //push into deleteElementsArray
+      for(i = start; i < deleteCount; i++) {
+        deleteElementsArray.push(copiedArray[i]);
+        delete array[i];
+      }
+
+      for(let i of array) {
+        i && tempArray.push(i);
+      }
+
+      array = tempArray;
+      // I need to figure out how to trip the length of the array;
+      // array.length = array.length - deleteElementsArray.length;
+
+      // for(i = start; i < array.length; i++) {
+
+      // }
+      // if(delCount === 0) {
+
+      // }
+
+
+      console.log('deleteElementsArray', deleteElementsArray);
+      console.log('original array', array)
+    }
+
+    console.log(splice2(months, 2))
+    // splice2(months);
+
+SYNTAX
+
+
+RETURN VALUE
+
+*/
+
+/*
+
+TESTS
+
+
+
+
+
+*/
+
+
+
+tests({
+
+});
+
+</script>
+
+
