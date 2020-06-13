@@ -36,7 +36,7 @@ Mutators
 -   [x] Array.prototype.reverse()
 -   [x] Array.prototype.copyWithin()
 -   [x] Array.prototype.sort()
--   [ ] Array.prototype.splice()
+-   [x] Array.prototype.splice()
 
 ## Getting Started
 
