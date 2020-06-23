@@ -24,7 +24,7 @@ The findIndex() method returns the index of the first element in the array that 
 Otherwise, it returns -1, indicating that no element passed the test.
 
 SYNTAX
-arr.findIndex(array, callback(element[, index[, array]])[, thisArg])
+findIndex(array, callback(element[, index[, array]])[, thisArg])
 
 PARAMETERS
 callback
@@ -53,7 +53,7 @@ DONE: It should return -1 if no element in the array satisfies the provided test
 DONE: It should return -1 if the array length is 0.
 DONE: It should not run the callback on any elements added to the array after the call to find begins.
 DONE: It should run the callback on existing, yet-unvisted element of the array if the array is changed by the callback function, where the value passed to the callback will be the value at the time 'find' visits the elements index.
-It should run the callback on deleted elements.
+DONE: It should run the callback on deleted elements.
 */
 
 function findIndex(array, callback, optionalThisObject) {

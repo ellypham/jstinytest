@@ -28,7 +28,7 @@ console.log(find(numbers, greaterThanTwo))
 The find() method returns the value of the first element in the provided array that satisfies the provided testing function.
 
 SYNTAX
-arr.find(array, callback(element[, index[, array]])[, thisArg])
+find(array, callback(element[, index[, array]])[, thisArg])
 
 PARAMETERS
 callback
@@ -58,7 +58,7 @@ DONE: It should return undefined if no element in the array satisfies the provid
 DONE: It should not mutate the array on which it is called.
 DONE: It should not run the callback on any elements added to the array after the call to find begins.
 DONE: It should run the callback on existing, yet-unvisted element of the array if the array is changed by the callback function, where the value passed to the callback will be the value at the time 'find' visits the elements index.
-It should run the callback on deleted elements.
+DONE: It should run the callback on deleted elements.
 */
 
 function find(array, callback, optionalThisObject) {

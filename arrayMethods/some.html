@@ -13,7 +13,7 @@ PROTOTYPE IMPLEMENTATION
     for(i = 0; i < array.length; i++) {
       if(callback(array[i], i, array )) {
         return true;
-      } 
+      }
     }
 
     return false;
@@ -25,7 +25,7 @@ PROTOTYPE IMPLEMENTATION
 The some() method tests whether at least one element in the array passes the test implemented by the provided function. It returns a Boolean value.
 
 SYNTAX
-arr.some(array, callback(element[, index[, array]])[, thisArg])
+some(array, callback(element[, index[, array]])[, thisArg])
 
 PARAMETERS
 callback
@@ -190,7 +190,7 @@ tests({
       return element > 2;
     });
     eq(result, true);
-  }, 
+  },
 
   'It should return false if the callback function returns a falsey value.': function() {
     const testArray = [1, 2, 3];

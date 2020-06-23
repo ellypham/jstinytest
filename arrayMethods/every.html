@@ -7,9 +7,9 @@ PROTOTYPE IMPLEMENTATION
 
   function isBelowThreshold(element) {
     return element < 40;
-  } 
+  }
 
-  function every(array, callback) { 
+  function every(array, callback) {
     for(i = 0; i < array.length; i++) {
       if(!callback(array[i], i, array)) {
         return false;
@@ -25,7 +25,7 @@ PROTOTYPE IMPLEMENTATION
 The every() method tests whether all elements in the array pass the test implemented by the provided function. It returns a Boolean value.
 
 SYNTAX
-arr.every(array, callback(element[, index[, array]])[, thisArg])
+every(array, callback(element[, index[, array]])[, thisArg])
 
 PARAMETERS
 callback
@@ -67,7 +67,7 @@ function every(array, callback, optionalThisObject) {
   }
 
   for(i = 0; i < length; i++) {
-    // Should not run callback on deleted elements 
+    // Should not run callback on deleted elements
     if(i in array) {
       if(!everyCallback(array[i], i, array)) {
         return false;
@@ -184,7 +184,7 @@ tests({
       return element > 0;
     });
     eq(result, true);
-  }, 
+  },
 
   'It should return false if the callback function returns a falsey value.': function() {
     const testArray = [1, 2, 3];
